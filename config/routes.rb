@@ -1,4 +1,24 @@
 Citybuilder::Application.routes.draw do
+
+  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
+
+  devise_for :users
+
+  
+
+  resources :instances
+
+  resources :expenditures
+
+  resources :categories
+
+  resources :regions
+
+  resources :cities
+
+  resources :models
+
+  root :to => 'pages#index'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
