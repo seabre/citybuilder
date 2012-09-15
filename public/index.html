@@ -9,19 +9,20 @@
 	<link rel="stylesheet" href="css/custom-theme/jquery.ui.1.8.16.ie.css">
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css">
 	<link rel="stylesheet" href="/css/style.css">
+	<link href="/css/bootstrap-toggle-animated.css" rel="stylesheet">
   </head>
   <body>
     <div id="page" style="padding: 2em;">
 	
     	<div id="map"></div>
 
-    	<div class="row" id="overlay">
-    		<div class="span3">
-    		<p>Allow Over-budgeting?</p>
-    			<div class="btn-group">
-	    			<button class="btn">Allow</button>
-	    			<button class="btn">Don't Allow</button>
-    			</div>
+	    		<div class="row" id="overlay">
+	    		<div class="span3">
+	    		<p>Allow Over-budgeting?</p>
+	    		<div class='toggle basic' data-enabled="ON" data-disabled="OFF" data-toggle="toggle">
+	            <input type="checkbox" value="1" name="myCheckbox" class="checkbox" checked="checked" />
+	            <label class="check" for="myCheckbox"></label>
+	          	</div>
     			
 				<div>
 					<h2>Line Items</h2>
@@ -59,6 +60,7 @@
     <script type="text/javascript" src="js/jquery-ui-1.8.23.custom.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
+    <script src="js/bootstrap-toggle.js"></script>
 	<script>
 		var map = L.map('map').setView([35.035, -85.209], 12);
 		L.tileLayer(
@@ -67,7 +69,7 @@
     			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
     			maxZoom: 18
 			}).addTo(map);
-		
+
 		var polygon = 	L.polygon(
 			[
 				[35.060,-85.309],
@@ -172,6 +174,18 @@
 			slide: updateIncome,
 			create: updateIncome
 		});
+
+		$('.basic').toggle({
+      		onClick: function (event, status) {}, // Do something on status change if you want
+      		text: {
+        		enabled: false, // Change the enabled disabled text on the fly ie: 'ENABLED'
+        		disabled: false // and for 'DISABLED'
+      		},
+      		style: {
+        		enabled: 'primary', // default button styles like btn-primary, btn-info, btn-warning just remove the btn- part.
+        		disabled: false // same goes for this, primary, info, warning, danger, success. 
+      		}
+    	});
 	</script>
 
   </body>
