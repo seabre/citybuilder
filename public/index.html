@@ -17,7 +17,12 @@
 
     	<div class="row" id="overlay">
     		<div class="span3">
-      
+    		<p>Allow Over-budgeting?</p>
+    			<div class="btn-group">
+	    			<button class="btn">Allow</button>
+	    			<button class="btn">Don't Allow</button>
+    			</div>
+    			
 				<div>
 					<h2>Line Items</h2>
 
@@ -62,6 +67,29 @@
     			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
     			maxZoom: 18
 			}).addTo(map);
+		
+		var polygon = L.polygon([
+		[-85.309868,35.060915]
+		[-85.309181,35.072998] 
+		[-85.303345,35.076089]
+		[-85.295792,35.083675]
+		[-85.286865,35.092103] 
+		[-85.269699,35.112045] 
+		[-85.260086,35.116819] 
+		[-85.257683,35.119628] 
+		[-85.248756,35.118785] 
+		[-85.25219,35.109518] 
+		[-85.23571,35.105866]
+		[-85.251846,35.101372] 
+		[-85.259056,35.098282] 
+		[-85.268326,35.094631]
+		[-85.277939,35.087608]
+		[-85.281029,35.078336] 
+		[-85.280342,35.068221]
+		[-85.282402,35.062039] 
+		[-85.292702,35.057543] 
+		[-85.308838,35.060634]
+		]).addTo(map);
 
 		var budget_init = 1000,
 			budget_categories = {
