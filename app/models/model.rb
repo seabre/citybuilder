@@ -1,4 +1,6 @@
 class Model < ActiveRecord::Base
+  serialize :data, JSON
+
   belongs_to :city
 
   #?
