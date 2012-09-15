@@ -1,0 +1,33 @@
+html {
+	height: 100%;
+}
+
+#map {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+}
+#overlay {
+	background: #fff;
+	border-radius: 5px;
+	box-shadow: 0 5px 25px 0 #666;
+	padding: 2em 1em;
+	position: absolute;
+	top: 2.5em;
+	right: 2.5em;
+}
+.span3 {
+	margin-left: 0;
+}
+#overlay:after {
+	content: "\00A0";
+	clear: both;
+	display: block;
+	height: 1px;
+	width: 0;
+}
+[id$=-cost] {
+	margin-bottom: 1em;
+}
