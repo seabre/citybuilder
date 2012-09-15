@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  city: 
+  income: 
+  year: 1
+
+two:
+  city: 
+  income: 
+  year: 1

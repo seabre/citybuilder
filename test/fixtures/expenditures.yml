@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  category: 
+  year: 1
+  instance: 
+
+two:
+  category: 
+  year: 1
+  instance: 

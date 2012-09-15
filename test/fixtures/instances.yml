@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  expenditure: 
+  amount: 1
+  year: 1
+  city: 
+
+two:
+  expenditure: 
+  amount: 1
+  year: 1
+  city: 

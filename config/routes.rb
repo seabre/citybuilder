@@ -1,4 +1,18 @@
 Citybuilder::Application.routes.draw do
+
+  resources :instances
+
+  resources :expenditures
+
+  resources :categories
+
+  resources :regions
+
+  resources :cities
+
+  resources :models
+
+  root :to => 'pages#index'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
