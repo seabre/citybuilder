@@ -43,3 +43,7 @@ gem 'jquery-rails'
 # gem 'debugger'
 gem 'less-rails'
 gem 'therubyracer'
+gem 'rails_admin'
+
+
+gem "devise"
