@@ -1,41 +1,177 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Ruby on Rails: Welcome aboard</title>
+	<meta charset="utf-8">
+    <title>CityBuilder</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
 	<link rel="stylesheet" href="css/custom-theme/jquery-ui-1.8.16.custom.css">
 	<link rel="stylesheet" href="css/custom-theme/jquery.ui.1.8.16.ie.css">
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css">
+	<link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
     <div id="page" style="padding: 2em;">
-      
-		<div id="slider"></div>
-      	<div id="slider-cost"></div>
-		<div id="slider-1"></div>
-      	<div id="slider-1-cost"></div>
-		<div id="slider-2"></div>
-      	<div id="slider-2-cost"></div>
-		<div id="slider-3"></div>
-      	<div id="slider-3-cost"></div>
+	
+    	<div id="map"></div>
+
+    	<div class="row" id="overlay">
+    		<div class="span3">
+    		<p>Allow Over-budgeting?</p>
+    			<div class="btn-group">
+	    			<button class="btn">Allow</button>
+	    			<button class="btn">Don't Allow</button>
+    			</div>
+    			
+				<div>
+					<h2>Line Items</h2>
+
+					<div data-budget_categories-key="a" id="slider"></div>
+		      		<div id="slider-cost">Safety: <span></span></div>
+
+					<div data-budget_categories-key="b" id="slider-1"></div>
+					<div id="slider-1-cost">Infrastructure: <span></span></div>
+
+					<div data-budget_categories-key="c" id="slider-2"></div>
+					<div id="slider-2-cost">Recreation: <span></span></div>
+
+					<div data-budget_categories-key="d" id="slider-3"></div>
+					<div id="slider-3-cost">Education: <span></span></div>
+				</div>
+
+		      	<div>
+					<h2>Income</h2>
+					<div id="total-slider"></div>
+					<div id="total-slider-cost">Income: <span></span></div>
+				</div>
+
+		      	<div>
+					<h2>Totals</h2>
+					<div id="total-budget-cost">Expenditures: <span></span></div>
+					<div id="total-discrepancy">Discrepancy: <span></span></div>
+				</div>
+
+     		</div>
+  		</div>
+
     </div>
     <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.8.23.custom.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
 	<script>
-		$('[id^=slider]').filter(':not([id$=cost])').slider({
-	        range: 'min',
-			min: 0,
-			max: 100,
-			slide: updateCost,
-			create: updateCost
-	    });
-		function updateCost( e, ui )
+		var map = L.map('map').setView([35.035, -85.209], 12);
+		L.tileLayer(
+			'http://{s}.tile.cloudmade.com/c80639c0bd60485e919561593e8c98ee/997/256/{z}/{x}/{y}.png', 
+			{
+    			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+    			maxZoom: 18
+			}).addTo(map);
+		
+		var polygon = L.polygon([
+		[-85.309868,35.060915]
+		[-85.309181,35.072998] 
+		[-85.303345,35.076089]
+		[-85.295792,35.083675]
+		[-85.286865,35.092103] 
+		[-85.269699,35.112045] 
+		[-85.260086,35.116819] 
+		[-85.257683,35.119628] 
+		[-85.248756,35.118785] 
+		[-85.25219,35.109518] 
+		[-85.23571,35.105866]
+		[-85.251846,35.101372] 
+		[-85.259056,35.098282] 
+		[-85.268326,35.094631]
+		[-85.277939,35.087608]
+		[-85.281029,35.078336] 
+		[-85.280342,35.068221]
+		[-85.282402,35.062039] 
+		[-85.292702,35.057543] 
+		[-85.308838,35.060634]
+		]).addTo(map);
+
+		var budget_init = 1000,
+			budget_categories = {
+				a: 100,
+				b: 50,
+				c: 250,
+				d: 150
+			},
+			$dependents = $('[id^=slider]').filter(':not([id$=cost])');
+
+			$dependents.each(function(){
+				var $slider = $(this);
+				$slider.slider({
+		        	range: 'min',
+					min: 1,
+					max: budget_init,
+					value: budget_categories[$slider.data('budget_categories-key')],
+					slide: updateLineItem,
+					create: updateLineItem
+		    	});
+			});
+		
+		function updateLineItem( e, ui )
 		{
 			var $slider = $(this),
-				value = ui.value || 0;
-			$( '#' + $slider.attr('id') + '-cost' ).text( '$' + value );
+				value = ui.value || ( budget_categories[$slider.data('budget_categories-key')] || 0);
+			
+			$( '#' + $slider.attr('id') + '-cost span' ).text( '$' + value );
+			
+			updateExpenditures( e, ui );
 		}
+
+		function updateIncome( e, ui )
+		{
+			var $slider = $('#total-slider'),
+				value = ui.value || budget_init;
+			
+			$( '#' + $slider.attr('id') + '-cost span' ).text( '$' + value );
+			
+			updateMaxValues( e, ui );
+
+			updateDiscrepancy();
+		};
+
+		function updateExpenditures( e, ui )
+		{
+			var total = 0;
+			
+			$dependents.each(function(){
+				total += parseInt($(this).slider('value'),10);
+			});
+			$('#total-budget-cost span').text( '$' + total );
+
+			updateDiscrepancy();
+		}
+
+		function updateDiscrepancy()
+		{
+			var diff = parseInt($('#total-slider-cost span').text().replace('$',''), 10) - parseInt($('#total-budget-cost span').text().replace('$',''), 10);
+			$('#total-discrepancy span').text('$'+diff).css("color", (diff < 0 ? "red" : "black" ));
+		}
+
+		function updateMaxValues( e, ui )
+		{
+			$dependents.slider('option','max',ui.value);
+			$dependents
+				.each(function(){
+					$(this).slider('option','value',$(this).slider('value'));
+				});
+			
+		}
+
+
+		$('#total-slider').slider({
+			range: 'min',
+			min: $dependents.length,
+			max: 5000,
+			value: budget_init,
+			slide: updateIncome,
+			create: updateIncome
+		});
 	</script>
+
   </body>
 </html>

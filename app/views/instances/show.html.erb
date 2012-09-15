@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Expenditure:</b>
+  <%= @instance.expenditure %>
+</p>
+
+<p>
+  <b>Amount:</b>
+  <%= @instance.amount %>
+</p>
+
+<p>
+  <b>Year:</b>
+  <%= @instance.year %>
+</p>
+
+<p>
+  <b>City:</b>
+  <%= @instance.city %>
+</p>
+
+
+<%= link_to 'Edit', edit_instance_path(@instance) %> |
+<%= link_to 'Back', instances_path %>

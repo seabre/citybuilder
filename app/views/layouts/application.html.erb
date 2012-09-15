@@ -1,14 +1,104 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Citybuilder</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <head>
+    <title>Citybuilder</title>
+  <%= stylesheet_link_tag "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
-</head>
-<body>
 
-<%= yield %>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+	<link rel="stylesheet" href="css/custom-theme/jquery-ui-1.8.16.custom.css">
+	<link rel="stylesheet" href="css/custom-theme/jquery.ui.1.8.16.ie.css">
+  </head>
+  <body>
+    <%= yield %>
+    <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.8.23.custom.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script>
 
-</body>
+		var budget_init = 1000,
+			budget_categories = {
+				a: 100,
+				b: 50,
+				c: 250,
+				d: 150
+			},
+			$dependents = $('[id^=slider]').filter(':not([id$=cost])');
+
+			$dependents.each(function(){
+				var $slider = $(this);
+				$slider.slider({
+		        	range: 'min',
+					min: 1,
+					max: budget_init,
+					value: budget_categories[$slider.data('budget_categories-key')],
+					slide: updateLineItem,
+					create: updateLineItem
+		    	});
+			});
+
+		function updateLineItem( e, ui )
+		{
+			var $slider = $(this),
+				value = ui.value || ( budget_categories[$slider.data('budget_categories-key')] || 0);
+
+			$( '#' + $slider.attr('id') + '-cost span' ).text( '$' + value );
+
+			updateExpenditures( e, ui );
+		}
+
+		function updateIncome( e, ui )
+		{
+			var $slider = $('#total-slider'),
+				value = ui.value || budget_init;
+
+			$( '#' + $slider.attr('id') + '-cost span' ).text( '$' + value );
+
+			updateMaxValues( e, ui );
+
+			updateDiscrepancy();
+		};
+
+		function updateExpenditures( e, ui )
+		{
+			var total = 0;
+
+			$dependents.each(function(){
+				total += parseInt($(this).slider('value'),10);
+			});
+			$('#total-budget-cost span').text( '$' + total );
+
+			updateDiscrepancy();
+		}
+
+		function updateDiscrepancy()
+		{
+			console.log($('#total-slider-cost span').text(),$('#total-budget-cost span').text());
+			var diff = parseInt($('#total-slider-cost span').text().replace('$',''), 10) - parseInt($('#total-budget-cost span').text().replace('$',''), 10);
+			$('#total-discrepancy span').text('$'+diff);
+		}
+
+		function updateMaxValues( e, ui )
+		{
+			$dependents.slider('option','max',ui.value);
+			$dependents
+				.each(function(){
+					$(this).slider('option','value',$(this).slider('value'));
+				});
+
+		}
+
+
+		$('#total-slider').slider({
+			range: 'min',
+			min: $dependents.length,
+			max: 5000,
+			value: budget_init,
+			slide: updateIncome,
+			create: updateIncome
+		});
+	</script>
+  </body>
 </html>

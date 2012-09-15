@@ -1,0 +1,27 @@
+<h1>Listing expenditures</h1>
+
+<table>
+  <tr>
+    <th>Category</th>
+    <th>Year</th>
+    <th>Instance</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @expenditures.each do |expenditure| %>
+  <tr>
+    <td><%= expenditure.category %></td>
+    <td><%= expenditure.year %></td>
+    <td><%= expenditure.instance %></td>
+    <td><%= link_to 'Show', expenditure %></td>
+    <td><%= link_to 'Edit', edit_expenditure_path(expenditure) %></td>
+    <td><%= link_to 'Destroy', expenditure, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Expenditure', new_expenditure_path %>
