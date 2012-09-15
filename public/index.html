@@ -1,34 +1,50 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Ruby on Rails: Welcome aboard</title>
+    <title>CityBuilder</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
 	<link rel="stylesheet" href="css/custom-theme/jquery-ui-1.8.16.custom.css">
 	<link rel="stylesheet" href="css/custom-theme/jquery.ui.1.8.16.ie.css">
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
+
   </head>
   <body>
     <div id="page" style="padding: 2em;">
+    	<div id="map" style="height: 500px"></div>
+    	<div class="row">
+    	<div class="span3">
       
-		<div data-budget_categories-key="a" id="slider"></div>
-      	<div id="slider-cost">Line Item A: <span></span></div>
-		<div data-budget_categories-key="b" id="slider-1"></div>
-      	<div id="slider-1-cost">Line Item B: <span></span></div>
-		<div data-budget_categories-key="c" id="slider-2"></div>
-      	<div id="slider-2-cost">Line Item C: <span></span></div>
-		<div data-budget_categories-key="d" id="slider-3"></div>
-      	<div id="slider-3-cost">Line Item D: <span></span></div>
+		<p><div data-budget_categories-key="a" id="slider"></div>
+      	<div id="slider-cost">Line Item A: <span></span></div></p>
+		<p><div data-budget_categories-key="b" id="slider-1"></div>
+      	<div id="slider-1-cost">Line Item B: <span></span></div></p>
+		<p><div data-budget_categories-key="c" id="slider-2"></div>
+      	<div id="slider-2-cost">Line Item C: <span></span></div></p>
+		<p><div data-budget_categories-key="d" id="slider-3"></div>
+      	<div id="slider-3-cost">Line Item D: <span></span></div></p>
 
 
-      	<div id="total-slider"></div>
-      	<div id="total-slider-cost">Income: <span></span></div>
-      	<div id="total-budget-cost">Expenditures: <span></span></div>
-      	<div id="total-discrepancy">Discrepancy: <span></span></div>
+      	<p><div id="total-slider"></div>
+      	<div id="total-slider-cost">Income: <span></span></div></p>
+      	<p><div id="total-budget-cost">Expenditures: <span></span></div></p>
+      	<p><div id="total-discrepancy">Discrepancy: <span></span></div></p>
+
+     	</div>
+  		</div>
     </div>
     <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.8.23.custom.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
 	<script>
+		var map = L.map('map').setView([51.505, -0.09], 13);
+		L.tileLayer(
+			'http://{s}.tile.cloudmade.com/c80639c0bd60485e919561593e8c98ee/997/256/{z}/{x}/{y}.png', 
+			{
+    			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+    			maxZoom: 18
+			}).addTo(map);
 
 		var budget_init = 1000,
 			budget_categories = {
@@ -87,9 +103,8 @@
 
 		function updateDiscrepancy()
 		{
-			console.log($('#total-slider-cost span').text(),$('#total-budget-cost span').text());
 			var diff = parseInt($('#total-slider-cost span').text().replace('$',''), 10) - parseInt($('#total-budget-cost span').text().replace('$',''), 10);
-			$('#total-discrepancy span').text('$'+diff);
+			$('#total-discrepancy span').text('$'+diff).css("color", (diff < 0 ? "red" : "black" ));
 		}
 
 		function updateMaxValues( e, ui )
@@ -112,5 +127,6 @@
 			create: updateIncome
 		});
 	</script>
+
   </body>
 </html>
