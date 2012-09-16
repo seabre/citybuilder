@@ -29,7 +29,7 @@ production:
    database: citybuilder_production
    pool: 5
    username: hackanooga
-   password: B3athAs4
+   password:
    host: localhost
 
 
