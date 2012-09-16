@@ -17,7 +17,7 @@ class CitiesController < ApplicationController
     #city_json = [:city => @city, :regions => @city.regions
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @city.to_json(:include => {:expenditures => {:include => :category}, :models => {}, :regions => {}, :instances => {}}) }
+      format.json { render json: @city.to_json(:include => {:expenditures => {:include => {:category => {:include => :icon}}}, :models => {}, :regions => {}, :instances => {}}) }
     end
   end
 
