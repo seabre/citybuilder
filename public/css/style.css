@@ -118,3 +118,10 @@ strong {
   box-shadow: 0 5px 25px 0 #666;
   font-size: 18px;
 }
+
+.deficit {
+    color: #F94C19;
+}
+.surplus {
+    color: #fff;
+}

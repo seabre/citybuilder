@@ -101,161 +101,170 @@
 				[35.060,-85.308]
 			]).addTo(map).bindPopup("I'm District 2. Hooray!");
 
-		var budget_init = 1000,
-			budget_categories = {
+		var budget_categories = {
 				a: 100,
 				b: 50,
 				c: 250,
 				d: 150
 			},
-			$dependents = $('[id^=slider]').filter(':not([id$=cost])');
+			$dependents = $('[id^=slider]').filter(':not([id$=cost])'),
+			$income = $('#total-slider'),
+			income = 1000,
+			expenditures = 0,
+			discrepancy = 0,
+			allow_deficit = false;
 
-			$dependents.each(function(){
-				var $slider = $(this);
-				$slider.slider({
-		        	range: 'min',
-					min: 1,
-					max: budget_init,
-					value: budget_categories[$slider.data('budget_categories-key')],
-					slide: updateLineItem,
-					create: updateLineItem
-		    	});
+		$dependents.each(function(){
+			var $slider = $(this);
+			$slider.slider({
+		    	range: 'min',
+				min: 1,
+				max: income,
+				value: budget_categories[$slider.data('budget_categories-key')],
+				slide: updateLineItem,
+				create: updateLineItem
 			});
+		});
 		
-		function updateLineItem( e, ui )
-		{
-			var $slider = $(this),
-				value = ui.value || ( budget_categories[$slider.data('budget_categories-key')] || 0);
-			
-			$( '#' + $slider.attr('id') + '-cost span' ).text( '$' + value );
-			
-			updateExpenditures( e, ui );
-		}
-
-		function updateIncome( e, ui )
-		{
-			var $slider = $('#total-slider'),
-				value = ui.value || budget_init;
-			
-			$( '#' + $slider.attr('id') + '-cost span' ).text( '$' + value );
-			
-			updateMaxValues( e, ui );
-
-			updateDiscrepancy();
-		};
-
-		function updateExpenditures( e, ui )
-		{
-			var total = 0,
-				income = parseInt($( '#total-slider-cost span' ).text().replace('$',''),10),
-				difference;
-		
-			$dependents.each(function(){
-				total += parseInt($(this).slider('value'),10);
-			});
-			$('#total-budget-cost span').text( '$' + total );
-			if (typeof income == "number" && typeof total == "number"){
-				difference = income - total;
-				if (!toggleStatus && difference < 0) {
-					reduceLineItems(difference);
-				}
-			}
-			updateDiscrepancy();
-		}
-
-		function updateDiscrepancy()
-		{
-			var diff = parseInt($('#total-slider-cost span').text().replace('$',''), 10) - parseInt($('#total-budget-cost span').text().replace('$',''), 10);
-			$('#total-discrepancy span').text('$'+diff).css("color", (diff < 0 ? "red" : "black" ));
-		}
-
-		function updateMaxValues( e, ui )
-		{
-			$dependents.slider('option','max',ui.value);
-			$dependents
-				.each(function(){
-					$(this).slider('option','value',$(this).slider('value'));
-				});
-			
-		}
-
-		var reductions_total = 0,
-			reductions_completed = 0,
-			reduce_by = 0;
-		function reduceLineItems(difference)
-		{
-			var count = $dependents.length;
-			
-			console.log('reduceLineItems');
-			reductions_completed = 0;
-			reductions_total = Math.abs( difference ),
-			reduce_by = Math.floor( difference / count );
-			
-			console.log('initial reduction loop');
-			$dependents.filter(':not(.zero)').each( tryReducingItem );
-			
-			
-			if ( reductions_completed < reductions_total )
-			{
-				console.log('additional reduction loop');
-				$dependents.filter(':not(.zero)').each( tryReducingItem );
-			}		
-		}
-		
-		function tryReducingItem( i, slider )
-		{
-			var $slider = $(slider),
-				total = $slider.slider('value') + reduce_by;
-				
-			$slider.removeClass('zero');
-			
-			if ( total <= 1 )
-			{
-				total = 1;
-				reductions_completed += Math.abs( 1 - $slider.slider('value') );
-				$slider.addClass('zero');
-			}
-			else
-			{
-				reductions_completed += Math.abs(reduce_by);
-			}
-			
-			$slider.slider( 'option', 'value', total );
-			
-			$( '#' + $slider.attr('id') + '-cost span' ).text( '$' + total );
-			
-			if ( reductions_completed >= reductions_total )
-			{
-				reduce_by = 0;
-				return;
-			}
-		}
-
-
-		$('#total-slider').slider({
+		$income.slider({
 			range: 'min',
 			min: $dependents.length,
 			max: 5000,
-			value: budget_init,
+			value: income,
 			slide: updateIncome,
 			create: updateIncome
 		});
 
-		var toggleStatus = true;
+		function updateLineItem( e, ui )
+		{
+			var $slider = $(this),
+				value = ui.value || ( budget_categories[$slider.data('budget_categories-key')] || 0 );
+			
+			$( '#' + $slider.attr('id') + '-cost span' )
+				.text( '$' + value );
+			
+			// check expenditures
+			updateExpenditures();
+			
+			// check discrepencies
+			updateDiscrepancy();
+		}
+
+		function updateIncome( e, ui )
+		{
+			income = ui.value || income;
+			
+			$( '#' + $income.attr('id') + '-cost span' ).text( '$' + income );
+			
+			updateMaxValues();
+
+			updateDiscrepancy();
+		};
+
+		function updateExpenditures()
+		{
+			// recalculate expenditures
+			expenditures = 0;
+			$dependents.filter('.ui-slider')
+				.each(function(){
+					var value = $(this).slider('value');
+					expenditures += value;
+				});
+			
+			// update the field
+			$('#total-budget-cost span').text( '$' + expenditures );
+		}
+
+		// Update the discrepency calculation
+		function updateDiscrepancy()
+		{
+			// How much are we off?
+			discrepancy = income - expenditures;
+			
+			// any reductions needed?
+			if ( ! allow_deficit &&
+				 discrepancy < 0 )
+			{
+				reduceLineItems();
+			}
+			
+			// Surplus or deficit?
+			$('#total-discrepancy span')
+				.text( (discrepancy < 0 ? '-$' + Math.abs(discrepancy) : '$' + discrepancy ) )
+				.removeClass('surplus deficit')
+				.addClass( (discrepancy < 0 ? "deficit" : "surplus" ) );
+			
+			// update totals
+			updateExpenditures();
+		}
+
+		// Update the Max Values of each dependent slider
+		function updateMaxValues()
+		{
+			// set the max
+			$dependents.slider( 'option','max', income );
+			
+			// adjust each slider to scale accordingly
+			$dependents
+				.each(function(){
+					var $slider = $(this);
+					$slider.slider( 'option', 'value', $slider.slider('value') );
+				});
+		}
+
+		function reduceLineItems()
+		{
+			// divide equally
+			var count = $dependents.length,
+				reduce_by = Math.floor( discrepancy / count );
+			
+			while ( discrepancy < 0 )
+			{
+				$dependents
+					.each(function(){
+					
+						// this only needs ot run if we still have a discrepancy
+						if ( discrepancy < 0 )
+						{
+							var $slider = $(this),
+								o_value = $slider.slider('value'),
+								n_value = $slider.slider('value') + reduce_by;
+            
+							if ( n_value <= 0 )
+							{
+								n_value = 0;
+								discrepancy += o_value;
+							}
+							else
+							{
+								discrepancy += Math.abs( reduce_by );
+							}
+            
+							$slider.slider( 'option', 'value', n_value );
+            
+							$( '#' + $slider.attr('id') + '-cost span' )
+								.text( '$' + n_value );
+            
+						}
+					
+					});
+			}
+		}
+
 
 		$('.basic').toggle({
       		onClick: function (event, status) {
-      			toggleStatus = !toggleStatus;
+      			allow_deficit = !allow_deficit;
       		},
       		text: {
-        		enabled: false, // Change the enabled disabled text on the fly ie: 'ENABLED'
-        		disabled: false // and for 'DISABLED'
+        		enabled: false,
+        		disabled: false
       		},
       		style: {
-        		enabled: 'primary', // default button styles like btn-primary, btn-info, btn-warning just remove the btn- part.
-        		disabled: false // same goes for this, primary, info, warning, danger, success. 
+        		enabled: 'primary',
+        		disabled: false
       		}
-    	});
+    	}).off();
 
     	var questions = {
 				a: "Juvenile crime has been increasing in our beautiful city. What should we do?"
