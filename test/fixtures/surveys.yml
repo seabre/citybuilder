@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  question: MyString
+  response1: MyString
+  response2: MyString
+  city: 
+
+two:
+  question: MyString
+  response1: MyString
+  response2: MyString
+  city: 
