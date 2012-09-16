@@ -1,4 +1,4 @@
 class Survey < ActiveRecord::Base
-  belongs_to :city
+  has_and_belongs_to_many :cities
   attr_accessible :question, :response1, :response2
 end
