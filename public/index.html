@@ -15,11 +15,11 @@
     <div id="page" style="padding: 2em;">
 		
     	<div id="map"></div>
-    			<div class="question">  
-    				Juvenile crime has been increasing in our beautiful city. What should we do?
+    			<div id="question">  
+    				<p class="question"></p>
   					<div class="btn-group" id="question-btn">
-  						<button class='btn'>Hire more police</button>
-  						<button class='btn'>Make our schools better</button>
+  						<button class='btn'></button>
+  						<button class='btn'></button>
   					</div>
 				</div>  
 
@@ -69,7 +69,7 @@
     <script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
     <script src="js/bootstrap-toggle.js"></script>
 	<script>
-		var map = L.map('map').setView([35.035, -85.209], 12);
+		var map = L.map('map').setView([35.100, -85.209], 12);
 		L.tileLayer(
 			'http://{s}.tile.cloudmade.com/c80639c0bd60485e919561593e8c98ee/997/256/{z}/{x}/{y}.png', 
 			{
@@ -337,29 +337,90 @@
     	}).off();
 
     	var questions = [
-    		{
-				a: "Juvenile crime has been increasing in our beautiful city. What should we do?",
-				b: "Hire more police",
-				c: "Make our schools better"
-			},
-			{
-				a: "test q?",
-				b: "Hire more popo",
-				c: "Make our schools better"
-			}
-		];
+    			{
+					question: "Juvenile crime has been increasing in our beautiful city. What should we do?",
+					response_a: "Hire more police",
+					category_a: "a",
+					response_b: "Make our schools better",
+					category_b: "d"
+				},
+				{
+					question: "Hardees is indroducing a 3lb burger. What should we do?",
+					response_a: "Eat that shit!",
+					category_a: "c",
+					response_b: "Increase ER funding",
+					category_b: "a"
+				},
+				{
+					question: "test q?",
+					response_a: "Hire more popo",
+					category_a: "a",
+					response_b: "Make our schools better",
+					category_b: "d"	
+				}
+			],
+			$question_block = $('#question'),
+			$question = $question_block.find('.question'),
+			$buttons = $question_block.find('button'),
+			$button_a = $buttons.eq(0),
+			$button_b = $buttons.eq(1);
+		
+		loadQuestion();
 
-		$('#question-btn').click(function wizard(e, ui){
-			jQuery.each(questions, function(){
-				$('div.question').html($(this).val());
-				//transition(diplayResults, )
-			//jQuery.each(responses, function(option1, option2){
-			//	$('id.question-btn').html("<button class='btn'>"+option1+"</button>"+"<button class='btn'>"+option2+"</button>")
-			//});
-		//console.log($('div.question').html());
-		//});
-			});
-		});
+		function handleChoice()
+		{
+			var amount = .1,
+				adjustment = amount * income,
+				voted_up = $(this).data('budget_category'),
+				voted_down = $(this).siblings('button').data('budget_category'),
+				$voted_up = $('[data-budget_categories-key=' + voted_up + ']'),
+				voted_up_val = $voted_up.slider('value') + adjustment,
+				$voted_down = $('[data-budget_categories-key=' + voted_down + ']'),
+				voted_down_val = $voted_down.slider('value') - adjustment;
+				
+			$voted_up.slider( 'option', 'value', voted_up_val );
+			$( '#' + $voted_up.attr('id') + '-cost span' )
+				.text( '$' + voted_up_val );
+
+			if ( voted_down_val < 0 )
+			{
+				voted_down_val = 0;
+			}
+			
+			val = voted_up_val - adjustment;
+			$voted_down.slider( 'option', 'value', val );
+			$( '#' + $voted_down.attr('id') + '-cost span' )
+				.text( '$' + val );
+			
+			updateDiscrepancy();
+			loadQuestion();
+		}
+		
+		function loadQuestion()
+		{
+			if ( questions.length )
+			{
+				$('#overlay').hide();
+				
+				var question = questions.shift();
+				$question.text( question.question );
+				$button_a
+					.text( question.response_a )
+					.data( 'budget_category', question.category_a );
+				$button_b
+					.text( question.response_b )
+					.data( 'budget_category', question.category_b );
+			}
+			else
+			{
+				$question_block.fadeOut('fast',function(){
+					$('#overlay').fadeIn();
+				});
+			}
+		}
+		
+		$('#question-btn')
+			.on('click','button',handleChoice);
 
 
 	</script>

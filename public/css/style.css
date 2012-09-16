@@ -102,7 +102,7 @@ strong {
 	margin-bottom: 1em;
 }
 
-.question {
+#question {
   z-index: 1;
   position: absolute;
   width: 100%;
