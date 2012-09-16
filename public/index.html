@@ -25,7 +25,9 @@
   					<div class="bar" style="width: 0%;"></div>
 					</div>
 				</div>  
-
+				<div class="row" id="logo">
+					<div class="span2"><img src="/img/CHAnge-Logo.svg"></div>
+				</div>
 	    		<div class="row" id="overlay">
 	    		<div class="span3">
 	    		<p><strong>Allow Over-budgeting?</strong></p>
@@ -35,31 +37,31 @@
 	          	</div>
     			
 				<div>
-					<h2>Line Items</h2>
+					<h2>Adjust Expenses</h2>
 
+					<div id="slider-cost"><img src="/img/Safety.svg" width="25px">Safety: <span></span></div>
 					<div data-budget_categories-key="a" id="slider"></div>
-		      		<div id="slider-cost">Safety: <span></span></div>
-
+					
+					<div id="slider-1-cost"><img src="/img/Infra.svg" width="25px">Infrastructure: <span></span></div>
 					<div data-budget_categories-key="b" id="slider-1"></div>
-					<div id="slider-1-cost">Infrastructure: <span></span></div>
-
+					
+					<div id="slider-2-cost"><img src="/img/PandR.svg" width="25px">Recreation: <span></span></div>
 					<div data-budget_categories-key="c" id="slider-2"></div>
-					<div id="slider-2-cost">Recreation: <span></span></div>
-
+					
+					<div id="slider-3-cost"><img src="/img/Edu.svg" width="25px">Education: <span></span></div>
 					<div data-budget_categories-key="d" id="slider-3"></div>
-					<div id="slider-3-cost">Education: <span></span></div>
 				</div>
 
 		      	<div>
 					<h2>Income</h2>
-					<div id="total-slider"></div>
 					<div id="total-slider-cost">Income: <span></span></div>
+					<div id="total-slider"></div>
 				</div>
 
 		      	<div>
 					<h2>Totals</h2>
-					<div id="total-budget-cost">Expenditures: <span></span></div>
-					<div id="total-discrepancy">Discrepancy: <span></span></div>
+					<div id="total-budget-cost">EXPENDITURES: <span></span></div>
+					<div id="total-discrepancy-cost">DISCREPANCY: <span></span></div>
 				</div>
 
      		</div>
@@ -181,7 +183,7 @@
 			}
 			
 			// Surplus or deficit?
-			$('#total-discrepancy span')
+			$('#total-discrepancy-cost span')
 				.text( (discrepancy < 0 ? '-$' + Math.abs(discrepancy) : '$' + discrepancy ) )
 				.removeClass('surplus deficit')
 				.addClass( (discrepancy < 0 ? "deficit" : "surplus" ) );
@@ -337,7 +339,8 @@
 			}
 			else
 			{
-				$question_block.fadeOut('fast',function(){
+				$question_block.children().fadeOut('fast',function(){
+				$question_block.empty().append($("<h1> My Chattanooga</h1>"));
 				});
 			}
 			progBar(questionTotal-questions.length);
