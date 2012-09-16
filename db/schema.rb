@@ -11,43 +11,29 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120915225833) do
+ActiveRecord::Schema.define(:version => 20120916061607) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
-    t.integer  "expenditure_id"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
-
-  add_index "categories", ["expenditure_id"], :name => "index_categories_on_expenditure_id"
 
   create_table "cities", :force => true do |t|
     t.string   "name"
-    t.integer  "region_id"
-    t.integer  "instance_id"
-    t.integer  "expenditure_id"
-    t.integer  "model_id"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
-
-  add_index "cities", ["expenditure_id"], :name => "index_cities_on_expenditure_id"
-  add_index "cities", ["instance_id"], :name => "index_cities_on_instance_id"
-  add_index "cities", ["model_id"], :name => "index_cities_on_model_id"
-  add_index "cities", ["region_id"], :name => "index_cities_on_region_id"
 
   create_table "expenditures", :force => true do |t|
     t.integer  "category_id"
     t.integer  "year"
-    t.integer  "instance_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.string   "name"
   end
 
   add_index "expenditures", ["category_id"], :name => "index_expenditures_on_category_id"
-  add_index "expenditures", ["instance_id"], :name => "index_expenditures_on_instance_id"
 
   create_table "instances", :force => true do |t|
     t.integer  "expenditure_id"
