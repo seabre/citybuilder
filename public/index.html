@@ -179,33 +179,56 @@
 			
 		}
 
+		var reductions_total = 0,
+			reductions_completed = 0,
+			reduce_by = 0;
 		function reduceLineItems(difference)
 		{
 			var count = $dependents.length;
-			var reduceBy = Math.ceil(difference/count);
-			console.log(count, reduceBy);
-			var complete = 0;
-			while (complete > difference) 
+			
+			console.log('reduceLineItems');
+			reductions_completed = 0;
+			reductions_total = Math.abs( difference ),
+			reduce_by = Math.floor( difference / count );
+			
+			console.log('initial reduction loop');
+			$dependents.filter(':not(.zero)').each( tryReducingItem );
+			
+			
+			if ( reductions_completed < reductions_total )
 			{
-				console.log("outerloop", complete, difference);
-				$dependents.each(function()
-				{
-					console.log("insideloop");
-					var $slider = $(this),
-						total = total < 0 ? 0 : $slider.slider('value')+reduceBy;
-					$(this).slider('option','value',total);
-					$( '#' + $slider.attr('id') + '-cost span' ).text( '$' + total );
-					complete += reduceBy;
-					if (complete <= difference)
-					{
-						return;
-					}
-				});
-				if (complete <= difference)
-					{
-						return;
-					}
-			}			
+				console.log('additional reduction loop');
+				$dependents.filter(':not(.zero)').each( tryReducingItem );
+			}		
+		}
+		
+		function tryReducingItem( i, slider )
+		{
+			var $slider = $(slider),
+				total = $slider.slider('value') + reduce_by;
+				
+			$slider.removeClass('zero');
+			
+			if ( total <= 1 )
+			{
+				total = 1;
+				reductions_completed += Math.abs( 1 - $slider.slider('value') );
+				$slider.addClass('zero');
+			}
+			else
+			{
+				reductions_completed += Math.abs(reduce_by);
+			}
+			
+			$slider.slider( 'option', 'value', total );
+			
+			$( '#' + $slider.attr('id') + '-cost span' ).text( '$' + total );
+			
+			if ( reductions_completed >= reductions_total )
+			{
+				reduce_by = 0;
+				return;
+			}
 		}
 
 
@@ -219,6 +242,7 @@
 		});
 
 		var toggleStatus = true;
+
 		$('.basic').toggle({
       		onClick: function (event, status) {
       			toggleStatus = !toggleStatus;
@@ -249,6 +273,7 @@
 			//});
 		//console.log($('div.question').html());
 		//});
+
 	</script>
 
   </body>
