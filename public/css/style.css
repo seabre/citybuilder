@@ -87,7 +87,7 @@ strong, {
 
 #question-btn {
   position: absolute;
-  right:100px;
+  right:73px;
   top: 32px;
 	z-index: 2;
 }
@@ -158,6 +158,12 @@ strong, {
   margin-top: 32px;
   background-color: #3B3131;
   background-image: -webkit-linear-gradient(top, #0a0a0a, #0a0a0a);
+}
+
+#share {
+  position: absolute;
+  right: 75px;
+  top: 32px;
 }
 
 .deficit {
