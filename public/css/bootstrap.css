@@ -5412,7 +5412,7 @@ a.badge:hover {
 }
 
 .progress {
-  height: 20px;
+  height: 6px;
   margin-bottom: 20px;
   overflow: hidden;
   background-color: #f7f7f7;
