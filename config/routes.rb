@@ -1,5 +1,7 @@
 Citybuilder::Application.routes.draw do
 
+  resources :surveys
+
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
   devise_for :users
