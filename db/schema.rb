@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120916151256) do
+ActiveRecord::Schema.define(:version => 20120916180708) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -42,6 +42,15 @@ ActiveRecord::Schema.define(:version => 20120916151256) do
   end
 
   add_index "expenditures", ["category_id"], :name => "index_expenditures_on_category_id"
+
+  create_table "icons", :force => true do |t|
+    t.string   "name"
+    t.string   "main_text"
+    t.string   "alt_text"
+    t.text     "image"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "instances", :force => true do |t|
     t.integer  "expenditure_id"
@@ -84,9 +93,11 @@ ActiveRecord::Schema.define(:version => 20120916151256) do
     t.string   "name"
     t.integer  "city_id"
     t.integer  "year"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.text     "shape_data"
+    t.integer  "district_number"
+    t.string   "color"
   end
 
   add_index "regions", ["city_id"], :name => "index_regions_on_city_id"
@@ -97,6 +108,8 @@ ActiveRecord::Schema.define(:version => 20120916151256) do
     t.string   "response2"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "category_1"
+    t.integer  "category_2"
   end
 
   create_table "users", :force => true do |t|

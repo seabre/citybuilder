@@ -14,10 +14,10 @@ class CitiesController < ApplicationController
   # GET /cities/1.json
   def show
     @city = City.find(params[:id])
-
+    #city_json = [:city => @city, :regions => @city.regions
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @city }
+      format.json { render json: @city.to_json(:include => {:expenditures => {:include => :category}, :models => {}, :regions => {}, :instances => {}}) }
     end
   end
 

@@ -81,12 +81,14 @@
 			}).addTo(map);
 
 		function loadShapeData (){
-			for (var i=1; i<=9; i++){
-				$.getJSON("http://66.18.41.1401/regions/"+i+".json",
-				  function(data) {
-				    var polygon = L.polygon(data.shape_data).addTo(map).bindPopup("I'm District"+i+"!");
-				  });
-			}
+			//$.getJSON("http://66.18.41.140/regions/"+i+".json",
+			$.getJSON( "/js/dummy-data/regions.json", function(data){
+			    $.each( data, function( i, region ){ 
+					var polygon = L.polygon(region.shape_data,{color:region.color})
+									.addTo(map)
+									.bindPopup("I'm " + region.name + "!");
+				});
+			});
 		}
 
 		loadShapeData();
