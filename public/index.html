@@ -21,6 +21,9 @@
   						<button class='btn'></button>
   						<button class='btn'></button>
   					</div>
+  					<div class="progress">
+  					<div class="bar" style="width: 0%;"></div>
+					</div>
 				</div>  
 
 	    		<div class="row" id="overlay">
@@ -278,6 +281,8 @@
 					category_b: "d"	
 				}
 			],
+			questionTotal = questions.length,
+			percent = 100/questions.length,
 			$question_block = $('#question'),
 			$question = $question_block.find('.question'),
 			$buttons = $question_block.find('button'),
@@ -314,7 +319,7 @@
 			updateDiscrepancy();
 			loadQuestion();
 		}
-		
+	
 		function loadQuestion()
 		{
 			if ( questions.length )
@@ -333,14 +338,21 @@
 			else
 			{
 				$question_block.fadeOut('fast',function(){
-					//$('#overlay').fadeIn();
 				});
 			}
+			progBar(questionTotal-questions.length);
+
 		}
 		
 		$('#question-btn')
 			.on('click','button',handleChoice);
 
+		function progBar(questionNum)
+		{
+			var $progress_block = $('.progress');
+			$progress_block.html("<div class='bar' style='width: "+parseInt(percent*questionNum)+"%'></div>");
+			console.log($progress_block);
+		}
 
 	</script>
 

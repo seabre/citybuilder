@@ -65,7 +65,7 @@ strong {
 #question-btn {
   position: absolute;
   right:100px;
-  top: 30px;
+  top: 32px;
 	z-index: 2;
 }
 
@@ -79,8 +79,8 @@ strong {
 }
 #overlay {
 	color: #fff;
-	background-color: #3b3131;
-	opacity: 60%;
+	background-color: #0a0a0a;
+	opacity: .9;
 	border-radius: 5px;
 	box-shadow: 0 5px 25px 0 #666;
 	padding: 2em 1em;
@@ -109,14 +109,27 @@ strong {
   height: 3em;
   top: 0;
   left: 0;
-  padding: 35px 35px 8px 14px;
-  margin-bottom: 20px;
+  padding: 35px 35px 5px 0px;
+  margin-bottom: 12px;
+  margin-right: 10px;
   color: #fff;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-  background-color: #3b3131;
-  opacity: 60%;
+  background-color: #0a0a0a;
+  opacity: .9;
   box-shadow: 0 5px 25px 0 #666;
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#question p{
+  padding-left: 14px;
+}
+
+.progress {
+  height: 5px;
+  margin-top: 40px;
+  background-color: #3B3131;
+  background-image: -webkit-linear-gradient(top, #0a0a0a, #0a0a0a);
 }
 
 .deficit {
