@@ -122,7 +122,6 @@
 						}),
 					}).addTo(map);
 									
->>>>>>> fb89f051ff4d06ca09820e84ad84b3f6551a293c
 				});
 			});
 		}
@@ -389,6 +388,25 @@
 			var $progress_block = $('.progress');
 			$progress_block.html("<div class='bar' style='width: "+parseInt(percent*questionNum)+"%'></div>");
 			console.log($progress_block);
+		}
+		
+		function findCenterPoint( coords )
+		{
+			var x_total = 0,
+				x_count = 0,
+				y_total = 0
+				y_count = 0;
+			
+			$.each( coords, function( i, location ){
+		
+				x_total += location.lat;
+				x_count++;
+				y_total += location.lng;
+				y_count++;
+				
+			});
+			
+			return [ x_total / x_count, y_total / y_count ];
 		}
 
 	</script>
