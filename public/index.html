@@ -89,13 +89,38 @@
 			//$.getJSON("http://66.18.41.140/regions/"+i+".json",
 			$.getJSON( "/js/dummy-data/regions.json", function(data){
 			    $.each( data, function( i, region ){ 
-					var polygon = L.polygon(region.shape_data,{ color: region.color })
-									.addTo(map)
-									.bindPopup("I'm District " + region.district_number + "!");
-									
-					var marker = L.marker(findCenterPoint(region.shape_data),{
+					
+					new L.polygon(region.shape_data,{ color: region.color })
+								.addTo(map)
+								.bindPopup("I'm District " + region.district_number + "!");
+					
+					var center = findCenterPoint(region.shape_data);
+					
+								
+					new L.marker([ center[0]-.005, center[1]-.005 ],{
 						icon: new L.Icon({
 							iconUrl: '/img/police.png',
+							iconSize: new L.Point(30, 30)
+						}),
+					}).addTo(map);
+					
+					new L.marker([ center[0]+.005, center[1]-.005 ],{
+						icon: new L.Icon({
+							iconUrl: '/img/parksrec.png',
+							iconSize: new L.Point(30, 30)
+						}),
+					}).addTo(map);
+					
+					new L.marker([ center[0]-.005, center[1]+.005 ],{
+						icon: new L.Icon({
+							iconUrl: '/img/education.png',
+							iconSize: new L.Point(30, 30)
+						}),
+					}).addTo(map);
+					
+					new L.marker([ center[0]+.005, center[1]+.005 ],{
+						icon: new L.Icon({
+							iconUrl: '/img/road.png',
 							iconSize: new L.Point(30, 30)
 						}),
 					}).addTo(map);
