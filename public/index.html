@@ -178,18 +178,27 @@
 			var reduceBy = Math.ceil(difference/count);
 			console.log(count, reduceBy);
 			var complete = 0;
-			while (complete != difference) 
+			while (complete > difference) 
 			{
+				console.log("outerloop", complete, difference);
 				$dependents.each(function()
 				{
+					console.log("insideloop");
 					var $slider = $(this),
 						total = total < 0 ? 0 : $slider.slider('value')+reduceBy;
 					$(this).slider('option','value',total);
 					$( '#' + $slider.attr('id') + '-cost span' ).text( '$' + total );
 					complete += reduceBy;
+					if (complete <= difference)
+					{
+						return;
+					}
 				});
-			}
-			break;				
+				if (complete <= difference)
+					{
+						return;
+					}
+			}			
 		}
 
 
