@@ -13,12 +13,19 @@
   </head>
   <body>
     <div id="page" style="padding: 2em;">
-	
+		
     	<div id="map"></div>
+    			<div class="question">  
+    				Juvenile crime has been increasing in our beautiful city. What should we do?
+  					<div class="btn-group" id="question-btn">
+  						<button class='btn'>Hire more police</button>
+  						<button class='btn'>Make our schools better</button>
+  					</div>
+				</div>  
 
 	    		<div class="row" id="overlay">
 	    		<div class="span3">
-	    		<p>Allow Over-budgeting?</p>
+	    		<p><strong>Allow Over-budgeting?</strong></p>
 	    		<div class='toggle basic' data-enabled="YES" data-disabled="NO" data-toggle="toggle">
 	            <input type="checkbox" value="1" name="myCheckbox" class="checkbox" checked="checked" />
 	            <label class="check" for="myCheckbox"></label>
@@ -225,6 +232,23 @@
         		disabled: false // same goes for this, primary, info, warning, danger, success. 
       		}
     	});
+
+    	var questions = {
+				a: "Juvenile crime has been increasing in our beautiful city. What should we do?"
+				//b: "test"
+		};
+		var responses = {
+			"Hire more police": "Make our schools better"
+			//b: "testanswer":"testanswer2"
+		};
+
+		//jQuery.each(questions, function(){
+			//$('div.question').html(this);
+			//jQuery.each(responses, function(option1, option2){
+			//	$('id.question-btn').html("<button class='btn'>"+option1+"</button>"+"<button class='btn'>"+option2+"</button>")
+			//});
+		//console.log($('div.question').html());
+		//});
 	</script>
 
   </body>
