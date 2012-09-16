@@ -19,7 +19,7 @@
 	    		<div class="row" id="overlay">
 	    		<div class="span3">
 	    		<p>Allow Over-budgeting?</p>
-	    		<div class='toggle basic' data-enabled="ON" data-disabled="OFF" data-toggle="toggle">
+	    		<div class='toggle basic' data-enabled="YES" data-disabled="NO" data-toggle="toggle">
 	            <input type="checkbox" value="1" name="myCheckbox" class="checkbox" checked="checked" />
 	            <label class="check" for="myCheckbox"></label>
 	          	</div>
@@ -139,13 +139,20 @@
 
 		function updateExpenditures( e, ui )
 		{
-			var total = 0;
-			
+			var total = 0,
+				income = parseInt($( '#total-slider-cost span' ).text().replace('$',''),10),
+				difference;
+		
 			$dependents.each(function(){
 				total += parseInt($(this).slider('value'),10);
 			});
 			$('#total-budget-cost span').text( '$' + total );
-
+			if (typeof income == "number" && typeof total == "number"){
+				difference = income - total;
+				if (!toggleStatus && difference < 0) {
+					reduceLineItems(difference);
+				}
+			}
 			updateDiscrepancy();
 		}
 
@@ -165,6 +172,26 @@
 			
 		}
 
+		function reduceLineItems(difference)
+		{
+			var count = $dependents.length;
+			var reduceBy = Math.ceil(difference/count);
+			console.log(count, reduceBy);
+			var complete = 0;
+			while (complete != difference) 
+			{
+				$dependents.each(function()
+				{
+					var $slider = $(this),
+						total = total < 0 ? 0 : $slider.slider('value')+reduceBy;
+					$(this).slider('option','value',total);
+					$( '#' + $slider.attr('id') + '-cost span' ).text( '$' + total );
+					complete += reduceBy;
+				});
+			}
+			break;				
+		}
+
 
 		$('#total-slider').slider({
 			range: 'min',
@@ -175,8 +202,11 @@
 			create: updateIncome
 		});
 
+		var toggleStatus = true;
 		$('.basic').toggle({
-      		onClick: function (event, status) {}, // Do something on status change if you want
+      		onClick: function (event, status) {
+      			toggleStatus = !toggleStatus;
+      		},
       		text: {
         		enabled: false, // Change the enabled disabled text on the fly ie: 'ENABLED'
         		disabled: false // and for 'DISABLED'

@@ -10,7 +10,9 @@ html {
 	left: 0;
 }
 #overlay {
-	background: #fff;
+	color: #fff;
+	background-color: #3b3131;
+	opacity: 70%;
 	border-radius: 5px;
 	box-shadow: 0 5px 25px 0 #666;
 	padding: 2em 1em;

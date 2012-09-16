@@ -16,7 +16,7 @@
   position: relative;
   bottom: -2px;
   height: 25px;
-  margin-left: 30px; /* can be removed if wanted */
+  /*margin-left: 5px; /* can be removed if wanted */
 }
 
 .toggle:before {
