@@ -83,12 +83,23 @@
 			}).addTo(map);
 
 		function loadShapeData (){
+			
+			var $svg = $('<object width="30" height="30" type="image/svg+xml" codebase="http://www.savarese.com/software/svgplugin/"></object>');
+			
 			//$.getJSON("http://66.18.41.140/regions/"+i+".json",
 			$.getJSON( "/js/dummy-data/regions.json", function(data){
 			    $.each( data, function( i, region ){ 
-					var polygon = L.polygon(region.shape_data,{color:region.color})
+					var polygon = L.polygon(region.shape_data,{ color: region.color })
 									.addTo(map)
-									.bindPopup("I'm " + region.name + "!");
+									.bindPopup("I'm District " + region.district_number + "!");
+									
+					var marker = L.marker(findCenterPoint(region.shape_data),{
+						icon: new L.Icon({
+							iconUrl: '/img/police.png',
+							iconSize: new L.Point(30, 30)
+						}),
+					}).addTo(map);
+									
 				});
 			});
 		}
@@ -356,7 +367,26 @@
 			$progress_block.html("<div class='bar' style='width: "+parseInt(percent*questionNum)+"%'></div>");
 			console.log($progress_block);
 		}
-
+		
+		function findCenterPoint( coords )
+		{
+			var x_total = 0,
+				x_count = 0,
+				y_total = 0
+				y_count = 0;
+			
+			$.each( coords, function( i, location ){
+		
+				x_total += location.lat;
+				x_count++;
+				y_total += location.lng;
+				y_count++;
+				
+			});
+			
+			return [ x_total / x_count, y_total / y_count ];
+		}
+		
 	</script>
 
   </body>
