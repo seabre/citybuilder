@@ -11,5 +11,7 @@ class City < ActiveRecord::Base
   #belongs_to :model
   has_many :models
 
-  attr_accessible :name
+  has_and_belongs_to_many :surveys
+
+  attr_accessible :name, :survey_ids
 end

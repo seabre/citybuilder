@@ -5,5 +5,5 @@ class Model < ActiveRecord::Base
 
   #?
   #belongs_to :income
-  attr_accessible :year
+  attr_accessible :year, :city_id, :income_id, :data
 end

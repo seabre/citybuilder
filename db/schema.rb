@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120916141615) do
+ActiveRecord::Schema.define(:version => 20120916151256) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(:version => 20120916141615) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.string   "name"
+    t.integer  "city_id"
   end
 
   add_index "expenditures", ["category_id"], :name => "index_expenditures_on_category_id"
@@ -94,12 +95,9 @@ ActiveRecord::Schema.define(:version => 20120916141615) do
     t.string   "question"
     t.string   "response1"
     t.string   "response2"
-    t.integer  "city_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
-
-  add_index "surveys", ["city_id"], :name => "index_surveys_on_city_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
