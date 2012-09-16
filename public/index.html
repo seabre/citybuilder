@@ -266,13 +266,17 @@
 			//b: "testanswer":"testanswer2"
 		};
 
-		//jQuery.each(questions, function(){
-			//$('div.question').html(this);
+		$('#question-btn').click(function wizard(e, ui){
+			jQuery.each(questions, function(){
+				$('div.question').html(this);
 			//jQuery.each(responses, function(option1, option2){
 			//	$('id.question-btn').html("<button class='btn'>"+option1+"</button>"+"<button class='btn'>"+option2+"</button>")
 			//});
 		//console.log($('div.question').html());
 		//});
+			});
+		});
+
 
 	</script>
 
