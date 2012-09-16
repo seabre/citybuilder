@@ -11,6 +11,10 @@ group :development, :test do
   gem 'sqlite3'
 end
 
+group :staging, :production do
+  gem 'mysql2'
+end
+
 
 
 # Gems used only for assets and not required
