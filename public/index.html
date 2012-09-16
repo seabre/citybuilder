@@ -101,6 +101,76 @@
 				[35.060,-85.308]
 			]).addTo(map).bindPopup("I'm District 2. Hooray!");
 
+		var polygon = 	L.polygon(
+			[
+				[35.094, -85.350],
+				[35.094, -85.350],
+				[35.083, -85.340],
+				[35.083, -85.340],
+				[35.072, -85.340],
+				[35.072, -85.340],
+				[35.077, -85.350],
+				[35.077, -85.350],
+				[35.094, -85.350],
+			]).addTo(map).bindPopup("I'm District 1. Hooray!");
+
+		var polygon = 	L.polygon(
+			[
+				[35.146, -85.258],
+				[35.146, -85.258],
+				[35.154, -85.253],
+				[35.154, -85.253],
+				[35.158, -85.250],
+				[35.158, -85.250],
+				[35.164, -85.251],
+				[35.164, -85.251],
+				[35.175, -85.242],
+				[35.175, -85.242],
+				[35.178, -85.244],
+				[35.178, -85.244],
+				[35.163, -85.265],
+				[35.163, -85.265],
+				[35.158, -85.265],
+				[35.158, -85.265],
+				[35.160, -85.259],
+				[35.160, -85.259],
+				[35.146, -85.258],
+			]).addTo(map).bindPopup("I'm District 4. Hooray!");
+
+		var polygon = 	L.polygon(
+			[
+				[35.054, -85.296],
+				[35.050, -85.300],
+				[35.051, -85.305],
+				[35.047, -85.307],
+				[35.043, -85.301],
+				[35.038, -85.304],
+				[35.030, -85.307],
+				[35.028, -85.304],
+				[35.034, -85.299],
+				[35.031, -85.292],
+				[35.035, -85.288],
+				[35.040, -85.288],
+				[35.042, -85.293],
+				[35.045, -85.291],
+				[35.045, -85.285],
+				[35.051, -85.282],
+				[35.059, -85.271],
+				[35.061, -85.273],
+				[35.088, -85.247],
+				[35.098, -85.250],
+				[35.095, -85.257],
+				[35.092, -85.265],
+				[35.087, -85.271],
+				[35.083, -85.277],
+				[35.075, -85.277],
+				[35.067, -85.277],
+				[35.060, -85.278],
+				[35.056, -85.283],
+				[35.054, -85.289],
+				[35.054, -85.296],
+			]).addTo(map).bindPopup("I'm District 1. Hooray!");
+
 		var budget_categories = {
 				a: 100,
 				b: 50,
@@ -266,18 +336,23 @@
       		}
     	}).off();
 
-    	var questions = {
-				a: "Juvenile crime has been increasing in our beautiful city. What should we do?"
-				//b: "test"
-		};
-		var responses = {
-			"Hire more police": "Make our schools better"
-			//b: "testanswer":"testanswer2"
-		};
+    	var questions = [
+    		{
+				a: "Juvenile crime has been increasing in our beautiful city. What should we do?",
+				b: "Hire more police",
+				c: "Make our schools better"
+			},
+			{
+				a: "test q?",
+				b: "Hire more popo",
+				c: "Make our schools better"
+			}
+		];
 
 		$('#question-btn').click(function wizard(e, ui){
 			jQuery.each(questions, function(){
-				$('div.question').html(this);
+				$('div.question').html($(this).val());
+				//transition(diplayResults, )
 			//jQuery.each(responses, function(option1, option2){
 			//	$('id.question-btn').html("<button class='btn'>"+option1+"</button>"+"<button class='btn'>"+option2+"</button>")
 			//});
